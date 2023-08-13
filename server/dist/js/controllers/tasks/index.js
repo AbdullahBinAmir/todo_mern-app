@@ -12,7 +12,7 @@ const addTodo = async (req, res) => {
     try {
         const body = req.body;
         const todo = new Todo({
-            name: body.task
+            task: body.task
         });
         const newTodo = await todo.save();
         const allTodos = await Todo.find();

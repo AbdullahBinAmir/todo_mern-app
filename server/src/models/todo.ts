@@ -1,4 +1,4 @@
-import { TodoType } from "./../types/todo"
+import { TodoType } from "./../types/todo.js"
 import { model, Schema } from "mongoose"
 
 const todoSchema: Schema = new Schema(

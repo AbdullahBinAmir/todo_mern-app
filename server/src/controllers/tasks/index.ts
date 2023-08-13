@@ -1,6 +1,6 @@
 import { Response, Request } from "express"
-import { TodoType } from "../../types/todo"
-import Todo from "../../models/todo"
+import { TodoType } from "../../types/todo.js"
+import Todo from "../../models/todo.js"
 
 const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -16,7 +16,7 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
       const body = req.body as Pick<TodoType, "task">
   
       const todo: TodoType = new Todo({
-        name: body.task
+        task: body.task
       })
   
       const newTodo: TodoType = await todo.save()

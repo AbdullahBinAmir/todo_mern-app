@@ -1,6 +1,7 @@
-import { Router } from "express";
+import express, { Router } from "express";
 import { getTodos, addTodo, deleteTodo } from "../controllers/tasks/index.js";
 const router = Router();
+router.use(express.json());
 router.get("/todos", getTodos);
 router.post("/add-todo", addTodo);
 router.delete("/delete-todo", deleteTodo);

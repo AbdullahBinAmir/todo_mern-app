@@ -1,29 +1,35 @@
-import React, {FormEvent, ChangeEvent, useState} from "react";
+import React, {FormEvent, ChangeEvent, useState, useEffect} from "react";
 
 import { Row } from "../components/Row";
 import { AddTodo } from "../components/AddTodos";
 import { data } from "../todos";
 import { Todo } from "../types";
+import { addTodo, deleteTodo, getTodos } from "../API";
 
 export const Todolist = () => {
     const [todos, setTodos] = useState<Todo[]>(data);
     const [task, setTask] = useState<string>("");
 
-    const handleAddTodo = (todo: Todo) => {
-        const updatedTodos = [...todos, todo];
-        setTodos(updatedTodos);
-        setTask("");
+    useEffect(() => {
+        fetchTodo()
+    }, [])
+
+    const fetchTodo = () => {
+        getTodos()
+        .then(({ data: { todos } }: Todo[] | any) => setTodos(todos))
+        .catch((err: Error) => console.log(err))
     }
 
     const handleSubmitTodo = (e: FormEvent) => {
         e.preventDefault();
-
-        const todo = {
-            id: '2',
-            task: task,
-            isCompleted: false
-        }
-        task && handleAddTodo(todo);
+        addTodo(task)
+        .then(({ status, data }) => {
+         if (status !== 201) {
+           throw new Error('Error! Todo not saved')
+         }
+         setTodos(data.todos)
+       })
+       .catch((err) => console.log(err))
     }
 
     const handleChange = (e: ChangeEvent) => {
@@ -31,9 +37,15 @@ export const Todolist = () => {
         setTask(value);
     }
 
-    const handleDeleteTodo = (id: string) => {
-        const updatedTodos = todos.filter((todo) => todo.id !== id)
-        setTodos(updatedTodos);
+    const handleDeleteTodo = (_id: string) => {
+        deleteTodo(_id)
+        .then(({ status, data }) => {
+            if (status !== 200) {
+              throw new Error('Error! Todo not deleted')
+            }
+            setTodos(data.todos)
+          })
+          .catch((err) => console.log(err))
     }
 
     return (
@@ -47,12 +59,12 @@ export const Todolist = () => {
                          task={task}
                 />
                 <div className="h-80 overflow-x-hidden overflow-y-auto todo-list">
-                    {todos.map((todo) => (
-                        <Row key={todo.id}
+                    {todos.map((todo,index) => (
+                        <Row key={index}
                              todo={todo}
                              handleDeleteTodo={handleDeleteTodo}
                         />
-                    )).reverse()}
+                    ))}
                 </div>
             </div>
         </section>

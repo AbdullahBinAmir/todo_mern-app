@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent } from "react"
 
 export type Todo = {
-    id: string
+    _id:string,
     task: string
 }
 
@@ -13,5 +13,12 @@ export type AddTodoType = {
 
 export type TodoProps = {
     todo: Todo,
-    handleDeleteTodo: (id:string) => void
+    handleDeleteTodo: (_id:string) => void
 }
+
+export type ApiDataType = {
+    message: string
+    status: string
+    todos: Todo[]
+    todo?: Todo
+  }
