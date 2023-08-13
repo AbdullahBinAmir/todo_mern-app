@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { ApiDataType, Todo } from './types'
 
-const baseUrl: string = 'http://localhost:4000'
+const baseUrl: string = 'https://6766-223-123-85-140.ngrok-free.app'
 
 export const getTodos = async (): Promise<AxiosResponse<ApiDataType>> => {
   try {
